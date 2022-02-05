@@ -54,7 +54,7 @@ user_input = input("Please enter a number: ")
 
 while(not user_input.isnumeric()):  # Kolla om inputen INTE är numerisk, detta funkar alltså bara för INTEGER, alltså heltal utan komma, men jag tycker att ett budget program inte behöver accceptera komma summor. (Om du inte håller med finns en fulare float lösning längre ner)
     user_input = input(
-        "My dear friend, is said a number, now please stop beeing such a jackass, and write a whole NUMBER using only numerical symbols: ")  # Be usern om en ny input, tills den lyckas att skriva in ett positivt heltal.
+        "My dear friend, i said a number, now please stop beeing such a jackass, and write a whole NUMBER using only numerical symbols: ")  # Be usern om en ny input, tills den lyckas att skriva in ett positivt heltal.
 
 this_is_a_number = 5  # Här gör vi lite matematiska beräkningar bara för att bevisa att vi nu försäkrat oss att "user_input" är en siffra
 sum = this_is_a_number + int(user_input)

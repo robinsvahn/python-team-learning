@@ -1,5 +1,15 @@
-class Game:
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy.orm import relationship, backref
+from sqlalchemy.ext.declarative import declarative_base
 
-    def __init__(self, game_id):
-        self.game_id = game_id
+from Services.db_tutorial import Base
+
+
+class Game(Base):
+    __tablename__ = "Game"
+
+    game_id = Column(Integer, primary_key=True)
+    players = relationship("Player", backref=backref("Game"))
+    rounds = relationship("Round", backref=backref("Game"))
+
        

@@ -1,7 +1,15 @@
-class Song: 
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy.orm import relationship, backref
+from sqlalchemy.ext.declarative import declarative_base
 
-    def __init__(self, song_title, singer_songwriter):
-        self.song_title = song_title
-        self.singer_songwriter = singer_songwriter 
+from Services.db_tutorial import Base
 
-    
+
+class Song(Base):
+    __tablename__ = "Song"
+
+    song_id = Column(Integer, primary_key=True)
+    rounds = relationship("Round", backref=backref("song"))
+    lyrics = relationship("Lyric", backref=backref("song"))
+    name = Column(String)
+    artist = Column(String)

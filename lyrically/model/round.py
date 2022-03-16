@@ -5,10 +5,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from Services.db_tutorial import Base
 
 
-class Player(Base):
-    __tablename__ = "Player"
+class Round(Base):
+    __tablename__ = "Round"
 
-    player_id = Column(Integer, primary_key=True)
+    round_id = Column(Integer, primary_key=True)
     game_id = Column(Integer, ForeignKey("Game.game_id"))
-    name = Column(String)
-    score = Column(Integer)
+    song_id = Column(Integer, ForeignKey("Song.song_id"))

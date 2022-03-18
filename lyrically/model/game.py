@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
-from Services.db_tutorial import Base
+from Services.db_details import Base
 
 
 class Game(Base):

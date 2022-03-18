@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
-from Services.db_tutorial import Base
+from Services.db_details import Base
 
 
 class Lyric(Base):
@@ -13,6 +13,10 @@ class Lyric(Base):
     text = Column(String)
     is_correct = Column(Boolean)
 
-    def __init__(self, text, is_correct):
+    def __init__(self, song_id, text, is_correct):
+        self.song_id = song_id
         self.text = text
         self.is_correct = is_correct
+
+    def __str__(self) -> str:
+        return self.text

@@ -12,4 +12,5 @@ class Game(Base):
     players = relationship("Player", backref=backref("Game"))
     rounds = relationship("Round", backref=backref("Game"))
 
-       
+    def __str__(self) -> str:
+        return f"Game with the ID: {self.game_id}, it was played between {self.players[0].name} and {self.players[1].name}"

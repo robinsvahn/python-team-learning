@@ -5,9 +5,9 @@ from Model.player import Player
 from Model.song import Song
 from Model.round import Round
 
-
 import time
 import os
+import random
 
 
 class Main:
@@ -27,6 +27,11 @@ class Main:
 
         user_choice = self.get_user_choice_in_range("Your choice: ", 1, 2)
         self.navigate_to_option(user_choice)
+
+        print()
+        input("Press the enter key to go back to the main menu")
+        self.current_game = None
+        self.main_menu()
 
     def get_user_choice_in_range(self, text: str, lower: int, upper: int) -> int:
         response = input(text)
@@ -53,16 +58,27 @@ class Main:
 
     def start_menu_for_saved_games(self) -> None:
         saved_games = self.get_all_saved_games()
-        print(saved_games)
-        # TODO Add logic to get saved games from DB and start it up
+        self.clear_console()
+        print("Here are all of the saved games: ")
+        for game in saved_games:
+            print(game)
+
+        chosen_game_id = self.get_user_choice_in_range(
+            "Enter a game ID to see the details of that game: ", 1, len(saved_games))
+        self.current_game = saved_games[chosen_game_id - 1]
+        print()
+        print("Loading scoreboard...")
+        time.sleep(2)
+        self.clear_console()
+        self.show_scoreboard()
 
     def get_all_saved_games(self) -> list:
-        return ["Game ID - 23, player 'Elon' vs 'Mark'"]
+        return self.db_service.get_saved_games()
 
     def start_new_game(self) -> None:
         print("Starting up a new game...")
+        time.sleep(3)
         self.current_game = Game()
-        # time.sleep(2)
         self.clear_console()
 
         print("Lets play a game of lyrically!")
@@ -82,30 +98,36 @@ class Main:
 
     def show_scoreboard(self) -> None:
         print(f"Scoreboard - Round {len(self.current_game.rounds)}")
+        print()
         for player in self.current_game.players:
             print(player)
+        print()
 
     def start_new_round(self) -> None:
+        print("Starting up a new round...")
+        time.sleep(3)
+        self.clear_console()
+
         new_round = Round(self.current_game.rounds)
         self.current_game.rounds.append(new_round)
 
         self.show_round(new_round)
         print("Round complete, loading scoreboard..")
-        time.sleep(1)
+        time.sleep(3)
         self.clear_console()
         self.show_scoreboard()
-        time.sleep(2)
 
         if not self.is_game_finished():
             self.start_new_round()
 
     def show_round(self, this_round: Round) -> None:
         lyrics = self.db_service.get_lyrics_from_song_id(this_round.song_id)
+        random.shuffle(lyrics)
         song = this_round.get_song()
         index = 1
 
         self.clear_console()
-        print(f"In this round, the lyric is from the song")
+        print(f"In this round, the lyric in question is from the song:")
         print(f"{song.name} by {song.artist}")
         print()
         print(f"Which of the following lyrics is from that song: ")
@@ -137,6 +159,7 @@ class Main:
                 print(
                     f"Congratulations {self.current_game.players[0].name}, you won the match!")
             print("Thanks for playing!")
+            self.db_service.save_game(self.current_game)
             return True
         else:
             return False
